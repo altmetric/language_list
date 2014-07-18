@@ -51,13 +51,7 @@ module LanguageList
     end
   end
 
-  ALL_LANGUAGES = begin
-     Marshal.load(File.read(File.expand_path('../../data/dump', __FILE__)))
-  rescue => e
-    warn "Reverting to hash load: #{e.message}"
-    yaml_data = YAML.load_file(File.expand_path(File.join(File.dirname(__FILE__),'..', 'data', 'languages.yml')))
-    yaml_data.map{|e| LanguageInfo.new(e) }
-  end
+  ALL_LANGUAGES = YAML.load_file(File.expand_path(File.join(File.dirname(__FILE__),'..', 'data', 'languages.yml'))).map{|e| LanguageInfo.new(e) }
   ISO_639_1 = ALL_LANGUAGES.select(&:iso_639_1?)
   LIVING_LANGUAGES = ALL_LANGUAGES.select(&:living?)
   COMMON_LANGUAGES = ALL_LANGUAGES.select(&:common?)
